@@ -17,6 +17,7 @@
       .maintitle {
         text-align: center; 
         width: 100%;
+        height: 50px;
       }
 
       .primarycontent {
@@ -30,6 +31,9 @@
         padding: 0;
         height: 60px;
         width: 100%;
+        position: fixed;
+        bottom: 0;
+        left: 0;
       }
 
       .sharpcorners {
@@ -39,7 +43,7 @@
 
     <title>Shopping List</title>
   </head>
-  <body class="bg-secondary">
+  <body class="bg-light">
     <div class="maintitle bg-secondary">
       <div class="btn-group float-left" role="group">
         <button type="button" class="btn btn-secondary btn-lg sharpcorners text-warning" onclick="">Sort by Type</button>
@@ -55,10 +59,13 @@
       <div class="text-left categorytitle text-dark">Category 2</div>
       <div class="text-left categorytitle text-dark">Category 3</div>
       <div class="text-left categorytitle text-dark">Category 4</div>
-
-
-      <button type="button" class="btn btn-info btn-lg btn-block mt-auto" style="">Scan Receipt</button>
+      <div class="text-left categorytitle text-dark">Category 1</div>
+      <div class="text-left categorytitle text-dark">Category 2</div>
+      <div class="text-left categorytitle text-dark">Category 3</div>
+      <div class="text-left categorytitle text-dark">Category 4</div>
     </div>
+
+    <button type="button" class="btn btn-info btn-lg btn-block" style="">Scan Receipt</button>
 
     <footer class="footer navbar bg-secondary navbar-fixed-bottom">
       <div class="btn-group" role="group" aria-label="Basic example" style="width: 100%; text-align: center;">
