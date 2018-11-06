@@ -52,6 +52,7 @@
       .filters {
         width: 100%;
       }
+
     </style>
 
     <title>Shopping List</title>
@@ -89,21 +90,10 @@
           </i>
             Favorites
         </div>
-        <div class="filter badge-info">Filter 1</div>
-        <div class="filter badge-info">Filter 2</div>
-        <div class="filter badge-info">Another Filter</div>
-        <div class="filter badge-info">Filter 4</div>
-        <div class="filter badge-info">Filter 5</div>
-        <div class="filter badge-info">Filter</div>
-        <div class="filter badge-info">Filter</div>
-        <div class="filter badge-info">Filter</div>
-        <div class="filter badge-info">Filter</div>
-        <div class="filter badge-info">Filter</div>
-        <div class="filter badge-info">Filter</div>
-        <div class="filter badge-info">Filter</div>
-        <div class="filter badge-info">Filter</div>
-        <div class="filter badge-info">Filter</div>
-        <div class="filter badge-info">Filter</div>
+        <div class="filter badge-info">Vegetarian</div>
+        <div class="filter badge-info">Vegan</div>
+        <div class="filter badge-info">Seafood</div>
+        <div class="filter badge-info">No Peanuts</div>
       </div>
       
 
@@ -127,6 +117,18 @@
     <script>
       function goto(url) {
         window.location = url;
+      }
+
+      // toggle status of each filter
+      let toggleStatus = [];
+      // assign onclick events for all filters
+      let filters = document.getElementsByClassName('filter');
+      for (let i = 0; i < filters.length; i++) {
+        filters[i].onclick = () => {
+          toggleStatus[i] = !toggleStatus[i];
+          (toggleStatus[i]) ? filters[i].classList.add("bg-warning") : filters[i].classList.remove("bg-warning");
+        };
+        toggleStatus.push(false);
       }
     </script>
   </body>
