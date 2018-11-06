@@ -79,7 +79,7 @@
 
       <div class="row">
         <button type="button" class="btn btn-secondary col-6" data-dismiss="modal" onclick="goto('./list.html')">Cancel</button>
-        <button type="button" class="btn btn-primary col-6" onclick="">Save</button>
+        <button type="button" class="btn btn-primary col-6" onclick="saveChanges()">Save</button>
       </div>
     </div>
 
@@ -104,43 +104,58 @@
         window.location = url;
       }
 
-      function saveList() {
+      function getCurrentItems() {
         let itemsToSave = document.getElementsByClassName('scanneditem');
         let itemList = [];
+        let checkboxes = [];
+        let itemNames = [];
+        let itemPrices = [];
 
-        for (let i = 0; i < itemsToSave.length; i++) {
-          console.log(itemsToSave);
-          //if (itemsToSave[i].checked) {
-            let children = itemsToSave[i].childNodes;
-            let item = "";
-            let price = "";
+        // get all item names
+        let itemNameElems = document.getElementsByClassName('itemname');
+        for (let i = 0; i < itemNameElems.length; i++) {
+          itemNames.push(itemNameElems[i].value);
+        }
 
-            console.log("children");
-            console.log(children);
+        // get all item prices
+        let itemPriceElems = document.getElementsByClassName('itemprice');
+        for (let i = 0; i < itemPriceElems.length; i++) {
+          let value = itemPriceElems[i].value;
+          (isNaN(value) || !value) ? itemPrices.push(0) : itemPrices.push(value);
+        }
+        
+        // get all checkbox statuses
+        let inputs = document.getElementsByTagName("input");
+        for (let i = 0; i < inputs.length; i++) {
+          if(inputs[i].type == "checkbox") {
+            checkboxes.push(inputs[i].checked); 
+          } 
+        }
 
-            // lol there's got to be a better way to do this
-            for (let j = 0; j < children.length; j++) {
-              console.log(children[j].classList);
-              if ((children[j].classList) && children[j].classList.indexOf("itemname") > -1) {
-                console.log("a");
-                item = children[j].value;
-              }
+        console.log(checkboxes);
+        console.log(itemNames);
+        console.log(itemPrices);
 
-              if ((children[j].classList) && children[j].classList.indexOf("itemprice") > -1) {
-                console.log("b");
-                price = children[j].value;
-              }
-            }
-
+        // condense into object format
+        for (let i = 0; i < checkboxes.length; i++) {
+          if (checkboxes[i])
             itemList.push({
-              name: item,
-              price: price,
+              name: itemNames[i],
+              price: itemPrices[i],
             });
-
-          //}
         }
 
         return itemList;
+      }
+
+      function saveToLocalStorage(list) {
+        // TODO: must combine with existing inventory
+        localStorage.setItem('inventoryData', list);
+      }
+
+      function saveChanges() {
+        saveToLocalStorage(JSON.stringify(getCurrentItems()));
+        goto('./list.html');
       }
 
       function addNewEntry() {
