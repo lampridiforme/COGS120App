@@ -55,34 +55,24 @@
     </div>
 
     <div class="primarycontent bg-light p-3 d-flex flex-column">
-      <div class="input-group mb-3">
+      <div class="input-group mb-3 scanneditem">
         <div class="input-group-prepend">
           <div class="input-group-text">
             <input type="checkbox" aria-label="Checkbox for following text input" checked>
           </div>
         </div>
-        <input type="text" class="form-control" aria-label="Text input with checkbox" value="scanned item">
-        <input type="text" class="form-control" aria-label="Text input with checkbox" value="scanned price">
+        <input type="text" class="form-control itemname" aria-label="Text input with checkbox" value="">
+        <input type="text" class="form-control itemprice" aria-label="Text input with checkbox" value="">
       </div>
 
-      <div class="input-group mb-3">
+      <div class="input-group mb-3 scanneditem">
         <div class="input-group-prepend">
           <div class="input-group-text">
             <input type="checkbox" aria-label="Checkbox for following text input" checked>
           </div>
         </div>
-        <input type="text" class="form-control" aria-label="Text input with checkbox" value="scanned item">
-        <input type="text" class="form-control" aria-label="Text input with checkbox" value="scanned price">
-      </div>
-
-      <div class="input-group mb-3">
-        <div class="input-group-prepend">
-          <div class="input-group-text">
-            <input type="checkbox" aria-label="Checkbox for following text input" checked>
-          </div>
-        </div>
-        <input type="text" class="form-control" aria-label="Text input with checkbox" value="scanned item">
-        <input type="text" class="form-control" aria-label="Text input with checkbox" value="scanned price">
+        <input type="text" class="form-control itemname" aria-label="Text input with checkbox" value="">
+        <input type="text" class="form-control itemprice" aria-label="Text input with checkbox" value="">
       </div>
 
       <button id="addEntryButton" type="button" class="btn btn-info btn-lg btn-block" style="" onclick="addNewEntry()">+</button>
@@ -114,12 +104,51 @@
         window.location = url;
       }
 
+      function saveList() {
+        let itemsToSave = document.getElementsByClassName('scanneditem');
+        let itemList = [];
+
+        for (let i = 0; i < itemsToSave.length; i++) {
+          console.log(itemsToSave);
+          //if (itemsToSave[i].checked) {
+            let children = itemsToSave[i].childNodes;
+            let item = "";
+            let price = "";
+
+            console.log("children");
+            console.log(children);
+
+            // lol there's got to be a better way to do this
+            for (let j = 0; j < children.length; j++) {
+              console.log(children[j].classList);
+              if ((children[j].classList) && children[j].classList.indexOf("itemname") > -1) {
+                console.log("a");
+                item = children[j].value;
+              }
+
+              if ((children[j].classList) && children[j].classList.indexOf("itemprice") > -1) {
+                console.log("b");
+                price = children[j].value;
+              }
+            }
+
+            itemList.push({
+              name: item,
+              price: price,
+            });
+
+          //}
+        }
+
+        return itemList;
+      }
+
       function addNewEntry() {
         let button = document.getElementById("addEntryButton");
         let newEntry = document.createElement("div");
         newEntry.classList.add("input-group");
         newEntry.classList.add("mb-3");
-        newEntry.innerHTML = '<div class="input-group-prepend"><div class="input-group-text"><input type="checkbox" aria-label="Checkbox for following text input" checked></div></div><input type="text" class="form-control" aria-label="Text input with checkbox"><input type="text" class="form-control" aria-label="Text input with checkbox">';
+        newEntry.innerHTML = '<div class="input-group-prepend scanneditem"><div class="input-group-text"><input type="checkbox" aria-label="Checkbox for following text input" checked></div></div><input type="text" class="form-control itemname" aria-label="Text input with checkbox"><input type="text" class="form-control itemprice" aria-label="Text input with checkbox">';
         (button.parentElement).insertBefore(newEntry, button);
       }
     </script>
