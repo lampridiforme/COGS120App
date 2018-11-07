@@ -54,6 +54,17 @@
         border-radius: 0px;
       }
 
+      .recipeblock {
+        width: 100px;
+        background-color: white;
+        display: inline-block;
+        float: left;
+        border-style: solid;
+        border-color: grey;
+        border-width: 2px;
+        border-radius: 2px;
+      }
+
       /* The snackbar - position it at the bottom and in the middle of the screen */
       #snackbar {
           visibility: hidden; /* Hidden by default. Visible on click */
@@ -125,37 +136,37 @@
         <div class="d-block p-2 text-white bg-dark float-left daytitle">
           Mon
         </div>
-        <div class="d-block p-2 text-dark bg-white float-left daycontent"></div>
+        <div id="Monday" class="d-block p-2 text-dark bg-white float-left daycontent"></div>
       </div>
       <div class="d-block bg-primary text-white day">
         <div class="d-block p-2 text-white bg-dark float-left daytitle">
           Tue
         </div>
-        <div class="d-block p-2 text-dark bg-light float-left daycontent"></div>
+        <div id="Tuesday" class="d-block p-2 text-dark bg-light float-left daycontent"></div>
       </div>
       <div class="d-block bg-primary text-white day">
         <div class="d-block p-2 text-white bg-dark float-left daytitle">
           Wed
         </div>
-        <div class="d-block p-2 text-dark bg-white float-left daycontent"></div>
+        <div id="Wednesday" class="d-block p-2 text-dark bg-white float-left daycontent"></div>
       </div>
       <div class="d-block bg-primary text-white day">
         <div class="d-block p-2 text-white bg-dark float-left daytitle">
           Thu
         </div>
-        <div class="d-block p-2 text-dark bg-light float-left daycontent"></div>
+        <div id="Thursday" class="d-block p-2 text-dark bg-light float-left daycontent"></div>
       </div>
       <div class="d-block bg-primary text-white day">
         <div class="d-block p-2 text-white bg-dark float-left daytitle">
           Fri
         </div>
-        <div class="d-block p-2 text-dark bg-white float-left daycontent"></div>
+        <div id="Friday" class="d-block p-2 text-dark bg-white float-left daycontent"></div>
       </div>
       <div class="d-block bg-primary text-white day">
         <div class="d-block p-2 text-white bg-dark float-left daytitle">
           Sat
         </div>
-        <div class="d-block p-2 text-dark bg-light float-left daycontent"></div>
+        <div id="Saturday" class="d-block p-2 text-dark bg-light float-left daycontent"></div>
       </div>
     </div>
 
@@ -202,6 +213,36 @@
 
       }
 
+      function addToDay(recipe) {
+        let newDiv = document.createElement("div");
+        newDiv.innerHTML = "<div class='recipeblock'><a href='" + recipe.image + "'>" + recipe.name + "</a></div>";
+        switch (recipe.day) {
+          case "Sunday": document.getElementById("Sunday").appendChild(newDiv);
+            break;
+          case "Monday": document.getElementById("Monday").appendChild(newDiv);
+            break;
+          case "Tuesday": document.getElementById("Tuesday").appendChild(newDiv);
+            break;
+          case "Wednesday": document.getElementById("Wednesday").appendChild(newDiv);
+            break;
+          case "Thursday": document.getElementById("Thursday").appendChild(newDiv);
+            break;
+          case "Friday": document.getElementById("Friday").appendChild(newDiv);
+            break;
+          case "Saturday": document.getElementById("Saturday").appendChild(newDiv);
+            break;
+        }
+      }
+
+      function initPage() {
+        let plannedRecipes = JSON.parse(localStorage.getItem('plannedRecipes'));
+        if (!plannedRecipes) plannedRecipes = [];
+        for (let i = 0; i < plannedRecipes.length; i++) {
+          addToDay(plannedRecipes[i]);
+        }
+      }
+
+      initPage();
     </script>
   </body>
 </html>

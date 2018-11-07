@@ -81,7 +81,7 @@
         position: fixed; /* Sit on top of the screen */
         z-index: 1; /* Add a z-index if needed */
         left: 50%; /* Center the snackbar */
-        bottom: 30px; /* 30px from the bottom */
+        bottom: 100px; /* 30px from the bottom */
     }
 
     /* Show the snackbar when clicking on a button (class added with JavaScript) */
@@ -96,21 +96,21 @@
     /* Animations to fade the snackbar in and out */
     @-webkit-keyframes fadein {
         from {bottom: 0; opacity: 0;} 
-        to {bottom: 30px; opacity: 1;}
+        to {bottom: 100px; opacity: 1;}
     }
 
     @keyframes fadein {
         from {bottom: 0; opacity: 0;}
-        to {bottom: 30px; opacity: 1;}
+        to {bottom: 100px; opacity: 1;}
     }
 
     @-webkit-keyframes fadeout {
-        from {bottom: 30px; opacity: 1;} 
+        from {bottom: 100px; opacity: 1;} 
         to {bottom: 0; opacity: 0;}
     }
 
     @keyframes fadeout {
-        from {bottom: 30px; opacity: 1;}
+        from {bottom: 100px; opacity: 1;}
         to {bottom: 0; opacity: 0;}
     }
 
@@ -137,8 +137,8 @@
             <div class="">
               <div class="align-middle" style="display: inline-block;">
                 Canned Cranberry Sauce
-                <div class="addbutton bg-light m-2" onclick="addPlanMessage()">+</div>
-                <div class="addbutton bg-light m-2 align-middle" onclick="addFavoriteMessage()">*</div>
+                <div class="addbutton bg-light m-2" onclick="addToPlan(0, 'Canned Cranberry Sauce', 'https://payload223.cargocollective.com/1/4/130628/6773651/04.jpg', './index.html', 'Monday')">+</div>
+                <div class="addbutton bg-light m-2 align-middle" onclick="addToFavorites(0, 'Canned Cranberry Sauce', 'https://payload223.cargocollective.com/1/4/130628/6773651/04.jpg', './index.html', 'Monday')">*</div>
               </div>
               <!-- <div class="align-middle recipeinfo" style="display: inline-block;">
                 <i class="material-icons">
@@ -167,8 +167,8 @@
             <div class="">
               <div class="align-middle" style="display: inline-block;">
                 Powerade Turkey
-                <div class="addbutton bg-light m-2">+</div>
-                <div class="addbutton bg-light m-2 align-middle">*</div>
+                <div class="addbutton bg-light m-2" onclick="addToPlan(1, 'Powerade Turkey', 'https://payload223.cargocollective.com/1/4/130628/6773651/01.jpg', './index.html', 'Tuesday')">+</div>
+                <div class="addbutton bg-light m-2 align-middle" onclick="addToPlan(1, 'Powerade Turkey', 'https://payload223.cargocollective.com/1/4/130628/6773651/01.jpg', './index.html', 'Tuesday')">*</div>
               </div>
             </div>
           </div>
@@ -181,7 +181,7 @@
             <div class="">
               <div class="align-middle" style="display: inline-block;">
                 Last Year's Leftovers
-                <div class="addbutton bg-light m-2">+</div>
+                <div class="addbutton bg-light m-2" onclick="addToPlan(2, 'Last Year\'s Leftovers', 'https://payload223.cargocollective.com/1/4/130628/6773651/07.jpg', './index.html', 'Friday')">+</div>
                 <div class="addbutton bg-light m-2 align-middle">*</div>
               </div>
             </div>
@@ -195,7 +195,7 @@
             <div class="">
               <div class="align-middle" style="display: inline-block;">
                 Rudolph
-                <div class="addbutton bg-light m-2">+</div>
+                <div class="addbutton bg-light m-2" onclick="addToPlan(3, 'Rudolph', 'https://payload231.cargocollective.com/1/4/130628/6930157/10.jpg', './index.html', 'Monday')">+</div>
                 <div class="addbutton bg-light m-2 align-middle">*</div>
               </div>
             </div>
@@ -209,7 +209,7 @@
             <div class="">
               <div class="align-middle" style="display: inline-block;">
                 Plymoth Cauliflower
-                <div class="addbutton bg-light m-2">+</div>
+                <div class="addbutton bg-light m-2" onclick="addToPlan(3, 'Plymoth Cauliflower', 'https://payload223.cargocollective.com/1/4/130628/6773651/06.jpg', './index.html', 'Thursday')">+</div>
                 <div class="addbutton bg-light m-2 align-middle">*</div>
               </div>
             </div>
@@ -273,6 +273,72 @@
           // After 3 seconds, remove the show class from DIV
           setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
       }
+
+      function saveRecipeToLocalStorage(recipe) {
+        let oldRecipes = JSON.parse(localStorage.getItem('plannedRecipes'));
+        if (!oldRecipes) 
+          oldRecipes = [];
+
+        oldRecipes.push(recipe);
+
+        localStorage.setItem('plannedRecipes', JSON.stringify(oldRecipes));
+      }
+
+      function saveFavoriteToLocalStorage(recipe) {
+        let oldFavorites = JSON.parse(localStorage.getItem('favoriteRecipes'));
+        if (!oldFavorites) 
+          oldFavorites = [];
+
+        oldFavorites.push(recipe);
+
+        localStorage.setItem('favoriteRecipes', JSON.stringify(oldFavorites));
+      }
+
+      // NOTE: hard coded to add to Monday for now
+      // id: id of recipe
+      // name: name of recipe
+      // image: url to image
+      // url: link to recipe
+      // day: day to place the recipe on (approximation of date)
+      // date: date associated with recipe
+      // TODO: needs level of indirection- select day first
+      function addToPlan(id, name, image, url, day) {
+        let recipeObj = {
+          id: id,
+          name: name,
+          image: image,
+          url: url,
+          day: day,
+          date: "01/01/1990",
+        };
+        addPlanMessage();
+        saveRecipeToLocalStorage(recipeObj);
+      }
+
+      function addToFavorites(id, name, image, url, day) {
+        let recipeObj = {
+          id: id,
+          name: name,
+          image: image,
+          url: url,
+          day: day,
+          date: "01/01/1990",
+        };
+        addFavoriteMessage();
+        saveFavoriteToLocalStorage(recipeObj);
+      }
+
+      // // toggle status of each button 
+      // let toggleStatus = [];
+      // // assign onclick events for all filters
+      // let addbuttons = document.getElementsByClassName('addbutton');
+      // for (let i = 0; i < addbuttons.length; i++) {
+      //   addbuttons[i].onclick = () => {
+      //     toggleStatus[i] = !toggleStatus[i];
+      //     (toggleStatus[i]) ? addbuttons[i].classList.add("bg-warning") : addbuttons[i].classList.remove("bg-warning");
+      //   };
+      //   toggleStatus.push(false);
+      // }
     </script>
   </body>
 </html>
