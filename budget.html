@@ -104,10 +104,10 @@
         let moneySpent = localStorage.getItem('budgetSpent');
         let budget = localStorage.getItem('budgetAmount');
         
-        if (!moneySpent) moneySpent = 0;
-        if (!budget) budget = 0;
+        if (!moneySpent || isNaN(moneySpent)) moneySpent = 0;
+        if (!budget || isNaN(budget)) return 0; // avoid divide by 0 situation
 
-        return Number((moneySpent/budget * 100).toFixed(2));
+        return Math.min(Number((moneySpent/budget * 100).toFixed(2)), 100);
       }
 
       initPage();

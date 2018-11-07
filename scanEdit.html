@@ -148,14 +148,26 @@
         return itemList;
       }
 
+      // TODO: dont do the budgetSpent part?
       function saveToLocalStorage(list) {
-        // TODO: must combine with existing inventory
-        localStorage.setItem('inventoryData', list);
+        console.log(list);
+        let oldlist = JSON.parse(localStorage.getItem('inventoryData'));
+        (!oldlist) ? oldlist = [] : oldlist = oldlist.concat(list);
+        localStorage.setItem('inventoryData', JSON.stringify(oldlist));
+        
+        console.log(oldlist);
+
+        let totalCosts = 0;
+        for (let i = 0; i < oldlist.length; i++) {
+          totalCosts += parseInt(oldlist[i].price);
+        }
+
+        localStorage.setItem('budgetSpent', totalCosts);
       }
 
       function saveChanges() {
-        saveToLocalStorage(JSON.stringify(getCurrentItems()));
-        goto('./list.html');
+        saveToLocalStorage(getCurrentItems());
+        //goto('./list.html');
       }
 
       function addNewEntry() {
