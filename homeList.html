@@ -113,7 +113,7 @@
         let plannedRecipes = JSON.parse(localStorage.getItem('plannedRecipes'));
         for (let i = 0; i < plannedRecipes.length; i++) {
           let newDiv = document.createElement('div');
-          newDiv.innerHTML = '<div class="text-left categorytitle text-dark">' + plannedRecipes[i].name + '</div>';
+          newDiv.innerHTML = '<div class="text-left categorytitle text-dark">' + plannedRecipes[i].name + ' (' + plannedRecipes[i].day + ')</div>';
           document.getElementById('recipeList').appendChild(newDiv);
         }
       }
