@@ -54,8 +54,8 @@
       </div>
     </div>
 
-    <div class="primarycontent bg-light p-3">
-      <div class="text-left categorytitle text-dark">Plymoth Cauliflower Rock</div>
+    <div id="recipeList" class="primarycontent bg-light p-3">
+<!--       <div class="text-left categorytitle text-dark">Plymoth Cauliflower Rock</div>
       <ul>
         <li>Cauliflower</li>
         <li>Black Bean</li>
@@ -86,7 +86,7 @@
       <ul>
         <li>Cranberry Sauce</li>
         <li>Sliced Pineapple</li>
-      </ul>
+      </ul> -->
     </div>
 
     <footer class="footer navbar bg-secondary navbar-fixed-bottom">
@@ -108,6 +108,17 @@
       function goto(url) {
         window.location = url;
       }
+
+      function initPage() {
+        let plannedRecipes = JSON.parse(localStorage.getItem('plannedRecipes'));
+        for (let i = 0; i < plannedRecipes.length; i++) {
+          let newDiv = document.createElement('div');
+          newDiv.innerHTML = '<div class="text-left categorytitle text-dark">' + plannedRecipes[i].name + '</div>';
+          document.getElementById('recipeList').appendChild(newDiv);
+        }
+      }
+
+      initPage();
     </script>
   </body>
 </html>

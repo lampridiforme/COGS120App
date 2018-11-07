@@ -53,6 +53,66 @@
       .sharpcorners {
         border-radius: 0px;
       }
+
+      .recipeblock {
+        width: 100px;
+        background-color: white;
+        display: inline-block;
+        float: left;
+        border-style: solid;
+        border-color: grey;
+        border-width: 2px;
+        border-radius: 2px;
+        height: 60px;
+        font-size: 12px;
+        width: 60px;
+      }
+
+      /* The snackbar - position it at the bottom and in the middle of the screen */
+      #snackbar {
+          visibility: hidden; /* Hidden by default. Visible on click */
+          min-width: 250px; /* Set a default minimum width */
+          margin-left: -125px; /* Divide value of min-width by 2 */
+          background-color: #333; /* Black background color */
+          color: #fff; /* White text color */
+          text-align: center; /* Centered text */
+          border-radius: 2px; /* Rounded borders */
+          padding: 16px; /* Padding */
+          position: fixed; /* Sit on top of the screen */
+          z-index: 1; /* Add a z-index if needed */
+          left: 50%; /* Center the snackbar */
+          bottom: 30px; /* 30px from the bottom */
+      }
+
+      /* Show the snackbar when clicking on a button (class added with JavaScript) */
+      #snackbar.show {
+          visibility: visible; /* Show the snackbar */
+          /* Add animation: Take 0.5 seconds to fade in and out the snackbar. 
+         However, delay the fade out process for 2.5 seconds */
+         -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+         animation: fadein 0.5s, fadeout 0.5s 2.5s;
+      }
+
+      /* Animations to fade the snackbar in and out */
+      @-webkit-keyframes fadein {
+          from {bottom: 0; opacity: 0;} 
+          to {bottom: 30px; opacity: 1;}
+      }
+
+      @keyframes fadein {
+          from {bottom: 0; opacity: 0;}
+          to {bottom: 30px; opacity: 1;}
+      }
+
+      @-webkit-keyframes fadeout {
+          from {bottom: 30px; opacity: 1;} 
+          to {bottom: 0; opacity: 0;}
+      }
+
+      @keyframes fadeout {
+          from {bottom: 30px; opacity: 1;}
+          to {bottom: 0; opacity: 0;}
+      }
     </style>
 
     <title>Hello, world!</title>
@@ -64,9 +124,10 @@
         <button type="button" class="btn btn-secondary sharpcorners btn-lg" onclick="goto('./homeList.html')">List View</button>
       </div>
       <div class="btn-group float-right" role="group">
-        <button type="button" class="btn btn-secondary btn-lg text-warning sharpcorners" onclick="goto('./index.html')">Edit</button>
+        <button type="button" class="btn btn-secondary btn-lg sharpcorners text-warning" onclick="goto('./index.html')">Edit</button>
       </div>
     </div>
+
     <div class="primarycontent">
       <div class="d-block bg-light text-white day">
         <div class="d-block p-2 text-white bg-dark float-left daytitle">
@@ -78,40 +139,39 @@
         <div class="d-block p-2 text-white bg-dark float-left daytitle">
           Mon
         </div>
-        <div class="d-block p-2 text-dark bg-white float-left daycontent"></div>
+        <div id="Monday" class="d-block p-2 text-dark bg-white float-left daycontent"></div>
       </div>
       <div class="d-block bg-primary text-white day">
         <div class="d-block p-2 text-white bg-dark float-left daytitle">
           Tue
         </div>
-        <div class="d-block p-2 text-dark bg-light float-left daycontent"></div>
+        <div id="Tuesday" class="d-block p-2 text-dark bg-light float-left daycontent"></div>
       </div>
       <div class="d-block bg-primary text-white day">
         <div class="d-block p-2 text-white bg-dark float-left daytitle">
           Wed
         </div>
-        <div class="d-block p-2 text-dark bg-white float-left daycontent"></div>
+        <div id="Wednesday" class="d-block p-2 text-dark bg-white float-left daycontent"></div>
       </div>
       <div class="d-block bg-primary text-white day">
         <div class="d-block p-2 text-white bg-dark float-left daytitle">
           Thu
         </div>
-        <div class="d-block p-2 text-dark bg-light float-left daycontent"></div>
+        <div id="Thursday" class="d-block p-2 text-dark bg-light float-left daycontent"></div>
       </div>
       <div class="d-block bg-primary text-white day">
         <div class="d-block p-2 text-white bg-dark float-left daytitle">
           Fri
         </div>
-        <div class="d-block p-2 text-dark bg-white float-left daycontent"></div>
+        <div id="Friday" class="d-block p-2 text-dark bg-white float-left daycontent"></div>
       </div>
       <div class="d-block bg-primary text-white day">
         <div class="d-block p-2 text-white bg-dark float-left daytitle">
           Sat
         </div>
-        <div class="d-block p-2 text-dark bg-light float-left daycontent"></div>
+        <div id="Saturday" class="d-block p-2 text-dark bg-light float-left daycontent"></div>
       </div>
     </div>
-
 
     <footer class="footer navbar bg-secondary navbar-fixed-bottom">
       <div class="btn-group" role="group" aria-label="Basic example" style="width: 100%; text-align: center;">
@@ -137,6 +197,7 @@
       </div>
     </div>
 
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -148,12 +209,43 @@
       }
 
       function editModeOn() {
-        
+
       }
 
       function editModeOff() {
 
       }
+
+      function addToDay(recipe) {
+        let newDiv = document.createElement("div");
+        newDiv.innerHTML = "<div class='recipeblock'><a href='" + recipe.image + "'>" + recipe.name + "</a></div>";
+        switch (recipe.day) {
+          case "Sunday": document.getElementById("Sunday").appendChild(newDiv);
+            break;
+          case "Monday": document.getElementById("Monday").appendChild(newDiv);
+            break;
+          case "Tuesday": document.getElementById("Tuesday").appendChild(newDiv);
+            break;
+          case "Wednesday": document.getElementById("Wednesday").appendChild(newDiv);
+            break;
+          case "Thursday": document.getElementById("Thursday").appendChild(newDiv);
+            break;
+          case "Friday": document.getElementById("Friday").appendChild(newDiv);
+            break;
+          case "Saturday": document.getElementById("Saturday").appendChild(newDiv);
+            break;
+        }
+      }
+
+      function initPage() {
+        let plannedRecipes = JSON.parse(localStorage.getItem('plannedRecipes'));
+        if (!plannedRecipes) plannedRecipes = [];
+        for (let i = 0; i < plannedRecipes.length; i++) {
+          addToDay(plannedRecipes[i]);
+        }
+      }
+
+      initPage();
     </script>
   </body>
 </html>
