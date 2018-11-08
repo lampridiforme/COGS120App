@@ -67,6 +67,18 @@
         text-align: center;
       }
 
+      .filter {
+        margin: 2px 2px 2px 2px;
+        padding: 5px 10px 5px 10px;
+        max-width: 200px;
+        display: inline-block;
+        border-radius: 50px;
+      }
+
+      .filters {
+        width: 100%;
+      }
+
 
     /* The snackbar - position it at the bottom and in the middle of the screen */
     #snackbar {
@@ -120,13 +132,27 @@
   </head>
   <body class="bg-light">
 
-
     <div class="primarycontent bg-light p-3">
       <div class="input-group mb-3">
         <input type="text" class="form-control" placeholder="Last search term" aria-label="Recipient's username" aria-describedby="button-addon2">
         <div class="input-group-append">
           <button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="goto('./recipeResults.html')">Search</button>
         </div>
+      </div>
+
+      <div class="filters" style="text-align: center;">
+        <div class="filter badge-info">
+  <!--      alignment style from github here: https://github.com/google/material-design-icons/issues/206
+          literally magic! -->
+          <i class="material-icons" style="display: inline-flex; vertical-align: middle;">
+          stars
+          </i>
+            Favorites
+        </div>
+        <div class="filter badge-info">Vegetarian</div>
+        <div class="filter badge-info">Vegan</div>
+        <div class="filter badge-info">Keto</div>
+        <div class="filter badge-info">Paleo</div>
       </div>
       
 
@@ -225,7 +251,7 @@
 
     <footer class="footer navbar bg-secondary navbar-fixed-bottom">
       <div class="btn-group" role="group" aria-label="Basic example" style="width: 100%; text-align: center;">
-        <button type="button" class="btn btn-secondary sharpcorners" style="width: 21%;" onclick="goto('./index.html')">Home</button>
+        <button type="button" class="btn btn-secondary sharpcorners" style="width: 21%;" onclick="goto('./index.html')">Plan</button>
         <button type="button" class="btn btn-secondary text-warning" style="width: 21%" onclick="goto('./recipes.html')">Recipes</button>
         <button type="button" class="btn btn-secondary" style="width: 21%" onclick="goto('./list.html')">S. List</button>
         <button type="button" class="btn btn-secondary" style="width: 21%" onclick="goto('./inventory.html')">Inv.</button>
@@ -328,17 +354,17 @@
         saveFavoriteToLocalStorage(recipeObj);
       }
 
-      // // toggle status of each button 
-      // let toggleStatus = [];
-      // // assign onclick events for all filters
-      // let addbuttons = document.getElementsByClassName('addbutton');
-      // for (let i = 0; i < addbuttons.length; i++) {
-      //   addbuttons[i].onclick = () => {
-      //     toggleStatus[i] = !toggleStatus[i];
-      //     (toggleStatus[i]) ? addbuttons[i].classList.add("bg-warning") : addbuttons[i].classList.remove("bg-warning");
-      //   };
-      //   toggleStatus.push(false);
-      // }
+        // toggle status of each filter
+      let toggleStatus = [];
+      // assign onclick events for all filters
+      let filters = document.getElementsByClassName('filter');
+      for (let i = 0; i < filters.length; i++) {
+        filters[i].onclick = () => {
+          toggleStatus[i] = !toggleStatus[i];
+          (toggleStatus[i]) ? filters[i].classList.add("bg-warning") : filters[i].classList.remove("bg-warning");
+        };
+        toggleStatus.push(false);
+      }
     </script>
   </body>
 </html>

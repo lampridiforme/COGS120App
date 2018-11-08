@@ -66,10 +66,26 @@
         border-style: solid;
         border-color: grey;
         border-width: 2px;
-        border-radius: 2px;
+        border-radius: 1000px;
         height: 60px;
         font-size: 12px;
         width: 60px;
+        margin-left: 2px;
+        position: relative;
+        padding-top: 10px;
+      }
+
+      .closebutton {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background-color: red;
+        right: -8px;
+        top: -5px;
+        border-radius: 10px;
+        font-size: 10px;
+        color: black;
+        text-align: center;
       }
 
       /* The snackbar - position it at the bottom and in the middle of the screen */
@@ -179,7 +195,7 @@
 
     <footer class="footer navbar bg-secondary navbar-fixed-bottom">
       <div class="btn-group" role="group" aria-label="Basic example" style="width: 100%; text-align: center;">
-        <button type="button" class="btn btn-secondary sharpcorners text-warning" style="width: 21%;" onclick="goto('./index.html')">Home</button>
+        <button type="button" class="btn btn-secondary sharpcorners text-warning" style="width: 21%;" onclick="goto('./index.html')">Plan</button>
         <button type="button" class="btn btn-secondary" style="width: 21%" onclick="goto('./recipes.html')">Recipes</button>
         <button type="button" class="btn btn-secondary" style="width: 21%" onclick="goto('./list.html')">S. List</button>
         <button type="button" class="btn btn-secondary" style="width: 21%" onclick="goto('./inventory.html')">Inv.</button>
@@ -215,20 +231,39 @@
       }
 
       function toggleEditMode() {
+        let closebuttons = document.getElementsByClassName('closebutton');
         editMode = !editMode;
 
-        (editMode) ? editbutton.classList.add('text-warning') : editbutton.classList.remove('text-warning');
+        if (editMode) {
+          editbutton.classList.add('text-warning');
+          for (let i = 0; i < closebuttons.length; i++) {
+            closebuttons[i].classList.remove('hideme');
+          }
+        } 
+        else {
+          editbutton.classList.remove('text-warning');
+          for (let i = 0; i < closebuttons.length; i++) {
+            closebuttons[i].classList.add('hideme');
+          }
+        }
+
       }
 
       function addToDay(recipe) {
         let newDiv = document.createElement("div");
-        newDiv.innerHTML = "<div class='recipeblock'><a href='" + recipe.image + "'>" + recipe.name + "</a></div>";
+        newDiv.innerHTML = "<a href='" + recipe.image + "'>" + recipe.name + "</a>";
+        let newCloseButton = document.createElement("div");
+        newCloseButton.innerHTML = "x";
+        newCloseButton.classList.add('hideme');
+        newCloseButton.classList.add('closebutton');
         // I am breaking SO MANY design rules here!
         newDiv.setAttribute('recipeid', recipe.id);
+        newDiv.appendChild(newCloseButton);
+        newDiv.classList.add('recipeblock');
 
         // testing something out
         //newDiv.onclick = () => deleteEntry(newDiv.getAttribute('recipeid');
-        newDiv.onclick = () => {if (editMode) deleteEntry(recipe.id)};
+        newCloseButton.onclick = () => {if (editMode) deleteEntry(recipe.id)};
 
         switch (recipe.day) {
           case "Sunday": document.getElementById("Sunday").appendChild(newDiv);
@@ -272,10 +307,9 @@
         // find all dom elements that have recipeid matching the given id
         let recipeblocks = document.getElementsByClassName('recipeblock');
         for (let i = 0; i < recipeblocks.length; i++) {
-          console.log(recipeblocks[i].parentNode);
-            console.log(recipeblocks[i].parentNode.getAttribute('recipeid') + ' vs ' + id);
-          if (recipeblocks[i].parentNode.getAttribute('recipeid') == id) { // WHY??????
-            recipeblocks[i].parentNode.outerHTML = ''; // destroy block
+            console.log(recipeblocks[i].getAttribute('recipeid') + ' vs ' + id);
+          if (recipeblocks[i].getAttribute('recipeid') == id) { // WHY??????
+            recipeblocks[i].outerHTML = ''; // destroy block
             console.log('got here');
           }
         }

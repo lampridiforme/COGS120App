@@ -91,7 +91,7 @@
 
     <footer class="footer navbar bg-secondary navbar-fixed-bottom">
       <div class="btn-group" role="group" aria-label="Basic example" style="width: 100%; text-align: center;">
-        <button type="button" class="btn btn-secondary sharpcorners text-warning" style="width: 21%;" onclick="goto('./index.html')">Home</button>
+        <button type="button" class="btn btn-secondary sharpcorners text-warning" style="width: 21%;" onclick="goto('./index.html')">Plan</button>
         <button type="button" class="btn btn-secondary" style="width: 21%" onclick="goto('./recipes.html')">Recipes</button>
         <button type="button" class="btn btn-secondary" style="width: 21%" onclick="goto('./list.html')">S. List</button>
         <button type="button" class="btn btn-secondary" style="width: 21%" onclick="goto('./inventory.html')">Inv.</button>
@@ -111,6 +111,7 @@
 
       function initPage() {
         let plannedRecipes = JSON.parse(localStorage.getItem('plannedRecipes'));
+        if (!plannedRecipes) plannedRecipes = [];
         for (let i = 0; i < plannedRecipes.length; i++) {
           let newDiv = document.createElement('div');
           newDiv.innerHTML = '<div class="text-left categorytitle text-dark">' + plannedRecipes[i].name + ' (' + plannedRecipes[i].day + ')</div>';
