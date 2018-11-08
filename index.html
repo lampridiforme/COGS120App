@@ -54,6 +54,10 @@
         border-radius: 0px;
       }
 
+      .hideme {
+        display: none;
+      }
+
       .recipeblock {
         width: 100px;
         background-color: white;
@@ -124,7 +128,7 @@
         <button type="button" class="btn btn-secondary sharpcorners btn-lg" onclick="goto('./homeList.html')">List View</button>
       </div>
       <div class="btn-group float-right" role="group">
-        <button type="button" class="btn btn-secondary btn-lg sharpcorners" onclick="goto('./homeCalendarEdit.html')">Edit</button>
+        <button id="editbutton" type="button" class="btn btn-secondary btn-lg sharpcorners" onclick="toggleEditMode()">Edit</button>
       </div>
     </div>
 
@@ -204,21 +208,28 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <script>
+      let editMode = false;
+
       function goto(url) {
         window.location = url;
       }
 
-      function editModeOn() {
+      function toggleEditMode() {
+        editMode = !editMode;
 
-      }
-
-      function editModeOff() {
-
+        (editMode) ? editbutton.classList.add('text-warning') : editbutton.classList.remove('text-warning');
       }
 
       function addToDay(recipe) {
         let newDiv = document.createElement("div");
         newDiv.innerHTML = "<div class='recipeblock'><a href='" + recipe.image + "'>" + recipe.name + "</a></div>";
+        // I am breaking SO MANY design rules here!
+        newDiv.setAttribute('recipeid', recipe.id);
+
+        // testing something out
+        //newDiv.onclick = () => deleteEntry(newDiv.getAttribute('recipeid');
+        newDiv.onclick = () => {if (editMode) deleteEntry(recipe.id)};
+
         switch (recipe.day) {
           case "Sunday": document.getElementById("Sunday").appendChild(newDiv);
             break;
@@ -242,6 +253,31 @@
         if (!plannedRecipes) plannedRecipes = [];
         for (let i = 0; i < plannedRecipes.length; i++) {
           addToDay(plannedRecipes[i]);
+        }
+      }
+
+      // deletion: grab the recipeid attribute, load from localstorage, find recipe in localstorage that has this id, delete it from the entry, (reload page?)
+      function deleteEntry(id) {
+        console.log('deleting entry with id ' + id);
+        let plannedRecipes = JSON.parse(localStorage.getItem('plannedRecipes'));
+        for (let i = 0; i < plannedRecipes.length; i++) {
+          if (plannedRecipes[i].id === id) {
+            plannedRecipes.splice(i, 1);
+            i = 0; // fskfjklsdjfklsflsd
+          }
+        }
+        localStorage.setItem('plannedRecipes', JSON.stringify(plannedRecipes));
+
+        // kLFJLKSDJFS
+        // find all dom elements that have recipeid matching the given id
+        let recipeblocks = document.getElementsByClassName('recipeblock');
+        for (let i = 0; i < recipeblocks.length; i++) {
+          console.log(recipeblocks[i].parentNode);
+            console.log(recipeblocks[i].parentNode.getAttribute('recipeid') + ' vs ' + id);
+          if (recipeblocks[i].parentNode.getAttribute('recipeid') == id) { // WHY??????
+            recipeblocks[i].parentNode.outerHTML = ''; // destroy block
+            console.log('got here');
+          }
         }
       }
 
