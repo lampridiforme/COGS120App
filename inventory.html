@@ -62,7 +62,7 @@
       <div class="text-left categorytitle text-dark">Meats</div>
       <ul></ul>
       <div class="text-left categorytitle text-dark">Misc.</div>
-      <ul></ul>
+      <ul id="misclist"></ul>
     </div>
 
     <footer class="footer navbar bg-secondary navbar-fixed-bottom">
@@ -86,7 +86,15 @@
       }
 
       function initPage() {
-        // TODO
+        let inventoryData = JSON.parse(localStorage.getItem('inventoryData'));
+        if (!inventoryData) inventoryData = [];
+        for (let i = 0; i < inventoryData.length; i++) {
+          // TODO: create different categories soon
+          let newItemDiv = document.createElement('li');
+          newItemDiv.innerHTML = inventoryData[i].name;
+          newItemDiv.setAttribute('itemid', inventoryData[i].id);
+          document.getElementById('misclist').appendChild(newItemDiv);
+        }
       }
 
       initPage();

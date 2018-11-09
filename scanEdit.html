@@ -61,8 +61,8 @@
             <input type="checkbox" aria-label="Checkbox for following text input" checked>
           </div>
         </div>
-        <input type="text" class="form-control itemname" aria-label="Text input with checkbox" value="">
-        <input type="text" class="form-control itemprice" aria-label="Text input with checkbox" value="">
+        <input type="text" class="form-control itemname" aria-label="Text input with checkbox" value="turkey">
+        <input type="text" class="form-control itemprice" aria-label="Text input with checkbox" value="36">
       </div>
 
       <div class="input-group mb-3 scanneditem">
@@ -71,8 +71,8 @@
             <input type="checkbox" aria-label="Checkbox for following text input" checked>
           </div>
         </div>
-        <input type="text" class="form-control itemname" aria-label="Text input with checkbox" value="">
-        <input type="text" class="form-control itemprice" aria-label="Text input with checkbox" value="">
+        <input type="text" class="form-control itemname" aria-label="Text input with checkbox" value="powerade">
+        <input type="text" class="form-control itemprice" aria-label="Text input with checkbox" value="3">
       </div>
 
       <button id="addEntryButton" type="button" class="btn btn-info btn-lg btn-block" style="" onclick="addNewEntry()">+</button>
@@ -140,19 +140,40 @@
         for (let i = 0; i < checkboxes.length; i++) {
           if (checkboxes[i])
             itemList.push({
+              id: itemNames[i] + "_" + i,
               name: itemNames[i],
               price: itemPrices[i],
+              category: "misc",
+              expirationDate: "01/01/1990",
             });
         }
 
+        console.log(itemList);
         return itemList;
+      }
+
+      function removeFromList(list) {
+        let oldToBuyList = JSON.parse(localStorage.getItem('toBuy'));
+        if (!oldToBuyList) oldToBuyList = [];
+
+        for (let i = 0; i < list.length; i++) {
+          console.log("list element: " + list[i].name);
+          console.log("position on oldList: " + oldToBuyList.indexOf(list[i].name));
+          if (oldToBuyList.indexOf(list[i].name) > -1) {
+            console.log(oldToBuyList);
+            oldToBuyList.splice(oldToBuyList.indexOf(list[i].name), 1);
+            i = 0; // lol
+          }
+        }
+
+        localStorage.setItem('toBuy', JSON.stringify(oldToBuyList));
       }
 
       // TODO: dont do the budgetSpent part?
       function saveToLocalStorage(list) {
         console.log(list);
         let oldlist = JSON.parse(localStorage.getItem('inventoryData'));
-        (!oldlist) ? oldlist = [] : oldlist = oldlist.concat(list);
+        (!oldlist) ? oldlist = list : oldlist = oldlist.concat(list);
         localStorage.setItem('inventoryData', JSON.stringify(oldlist));
         
         console.log(oldlist);
@@ -166,8 +187,10 @@
       }
 
       function saveChanges() {
-        saveToLocalStorage(getCurrentItems());
-        goto('./list.html');
+        let currentItems = getCurrentItems();
+        saveToLocalStorage(currentItems);
+        removeFromList(currentItems);
+        //goto('./list.html');
       }
 
       function addNewEntry() {

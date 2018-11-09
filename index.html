@@ -224,6 +224,29 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <script>
+      let mockIngredientDB = [
+        {
+          recipe: "Canned Cranberry Sauce",
+          ingredients: ["cranberry sauce", "pineapple"]
+        },
+        {
+          recipe: "Powerade Turkey",
+          ingredients: ["powerade", "turkey"]
+        },
+        {
+          recipe: "Last Year's Leftovers",
+          ingredients: ["pasta"]
+        },
+        {
+          recipe: "Rudolph",
+          ingredients: ["ground beef", "ketchup", "soy sauce", "antlers"]
+        },
+        {
+          recipe: "Plymoth Cauliflower",
+          ingredients: ["cauliflower", "black beans"]
+        }
+
+      ];
       let editMode = false;
 
       function goto(url) {
@@ -289,6 +312,11 @@
         for (let i = 0; i < plannedRecipes.length; i++) {
           addToDay(plannedRecipes[i]);
         }
+      }
+
+      // remove ingredients upon deletion
+      function removeIngredients() {
+
       }
 
       // deletion: grab the recipeid attribute, load from localstorage, find recipe in localstorage that has this id, delete it from the entry, (reload page?)

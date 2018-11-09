@@ -274,6 +274,29 @@
       }
     </script>
     <script>
+      let mockIngredientDB = [
+        {
+          recipe: "Canned Cranberry Sauce",
+          ingredients: ["cranberry sauce", "pineapple"]
+        },
+        {
+          recipe: "Powerade Turkey",
+          ingredients: ["powerade", "turkey"]
+        },
+        {
+          recipe: "Last Year's Leftovers",
+          ingredients: ["pasta"]
+        },
+        {
+          recipe: "Rudolph",
+          ingredients: ["ground beef", "ketchup", "soy sauce", "antlers"]
+        },
+        {
+          recipe: "Plymoth Cauliflower",
+          ingredients: ["cauliflower", "black beans"]
+        }
+
+      ];
       function addFavoriteMessage() {
           // Get the snackbar DIV
           var x = document.getElementById("snackbar");
@@ -338,6 +361,7 @@
           date: "01/01/1990",
         };
         addPlanMessage();
+        addIngredientsToList(name);
         saveRecipeToLocalStorage(recipeObj);
       }
 
@@ -352,6 +376,21 @@
         };
         addFavoriteMessage();
         saveFavoriteToLocalStorage(recipeObj);
+      }
+
+      function getIngredientsFromDB(recipeName) {
+        for (let i = 0; i < mockIngredientDB.length; i++) {
+          if (mockIngredientDB[i].recipe === recipeName) {
+            return mockIngredientDB[i].ingredients;
+          }
+        }
+      }
+
+      function addIngredientsToList(recipeName) {
+        let oldIngredients = JSON.parse(localStorage.getItem('toBuy'));
+        if (!oldIngredients) oldIngredients = [];
+
+        localStorage.setItem('toBuy', JSON.stringify(oldIngredients.concat(getIngredientsFromDB(recipeName))));
       }
 
         // toggle status of each filter
